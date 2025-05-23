@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Sửa Máy Lạnh Ô Tô</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin: 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        h3 {
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .form-group {
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: transform 0.2s, background 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #c0392b, #e74c3c);
+            transform: translateY(-2px);
+        }
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            min-width: 500px; /* Đảm bảo bảng cuộn ngang trên mobile */
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.85em;
+        }
+        th {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #ecf0f1;
+            transition: background-color 0.3s;
+        }
+        .price {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        /* Responsive cho mobile */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                margin: 5px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            h3 {
+                font-size: 1.1em;
+            }
+            label {
+                font-size: 0.85em;
+            }
+            input, select {
+                padding: 6px;
+                font-size: 0.85em;
+            }
+            button {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+            th, td {
+                padding: 6px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quản Lý Sửa Máy Lạnh Ô Tô</h1>
+
+        <!-- Form thêm mới thông tin -->
+        <div class="form-group">
+            <h3>Thêm Dịch Vụ Mới</h3>
+            <form id="serviceForm">
+                <label for="customerName">Tên Khách Hàng:</label>
+                <input type="text" id="customerName" required>
+
+                <label for="carModel">Mẫu Xe:</label>
+                <input type="text" id="carModel" required>
+
+                <label for="serviceType">Loại Dịch Vụ:</label>
+                <select id="serviceType" required>
+                    <option value="Kiểm tra máy lạnh">Kiểm tra máy lạnh</option>
+                    <option value="Nạp gas">Nạp gas</option>
+                    <option value="Sửa chữa hệ thống">Sửa chữa hệ thống</option>
+                    <option value="Vệ sinh dàn lạnh">Vệ sinh dàn lạnh</option>
+                </select>
+
+                <label for="price">Giá Tiền (VNĐ):</label>
+                <input type="number" id="price" min="0" required>
+
+                <label for="status">Trạng Thái:</label>
+                <select id="status" required>
+                    <option value="Chờ xử lý">Chờ xử lý</option>
+                    <option value="Đang sửa">Đang sửa</option>
+                    <option value="Hoàn thành">Hoàn thành</option>
+                </select>
+
+                <button type="submit">Thêm Dịch Vụ</button>
+            </form>
+        </div>
+
+        <!-- Bảng danh sách dịch vụ -->
+        <h3>Danh Sách Dịch Vụ</h3>
+        <div class="table-container">
+            <table id="serviceTable">
+                <thead>
+                    <tr>
+                        <th>Tên Khách Hàng</th>
+                        <th>Mẫu Xe</th>
+                        <th>Loại Dịch Vụ</th>
+                        <th>Giá Tiền (VNĐ)</th>
+                        <th>Trạng Thái</th>
+                    </tr>
+                </thead>
+                <tbody id="serviceList">
+                    <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript để xử lý form và bảng
+        document.getElementById('serviceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Lấy giá trị từ form
+            const customerName = document.getElementById('customerName').value;
+            const carModel = document.getElementById('carModel').value;
+            const serviceType = document.getElementById('serviceType').value;
+            const price = document.getElementById('price').value;
+            const status = document.getElementById('status').value;
+
+            // Tạo hàng mới trong bảng
+            const table = document.getElementById('serviceList');
+            const newRow = table.insertRow();
+
+            newRow.innerHTML = `
+                <td>${customerName}</td>
+                <td>${carModel}</td>
+                <td>${serviceType}</td>
+                <td class="price">${Number(price).toLocaleString('vi-VN')}</td>
+                <td>${status}</td>
+            `;
+
+            // Reset form
+            document.getElementById('serviceForm').reset();
+        });
+    </script>
+</body>
+</html>
